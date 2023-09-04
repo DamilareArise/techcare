@@ -1,0 +1,214 @@
+{% extends 'common.html' %}
+  {% block content %}
+  {% comment %} {% block title %}Blog-details{% endblock title %} {% endcomment %}
+  {% load static %}
+
+  <div class="page-section pt-5">
+    <div class="container">
+      {% if service_detail %}
+      {% for service in service_detail %}
+      <div class="row">
+        <div class="col-lg-8">
+          <nav aria-label="Breadcrumb">
+            <ol class="breadcrumb bg-transparent py-0 mb-5">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Blog</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{service.service_option}}</li>
+            </ol>
+          </nav>
+        </div>
+      </div> <!-- .row -->
+      <div class="row">
+        <div class="col-lg-8">
+          <article class="blog-details">
+            <div class="post-thumb">
+              {% if service.service_logo %}
+              <img src="{{service.service_logo.url}}" alt="img" width="100px" height="100px" />
+              {% else %}
+              <img src="{% static '/assets/img/blog/blog_3.jpg' %}" alt="">
+              {% endif %}
+            </div>
+            <div class="post-meta">
+              <div class="post-author">
+                <span class="text-grey">By</span> <a href="#">{{service.HoD.last_name}} {{service.HoD.first_name}}</a>  
+              </div>
+            </div>
+            <h2 class="post-title h1">{{service.service_option}}</h2>
+            <div class="post-content">
+              <p>{{service.description}}</p>
+            </div>
+          
+          </article> <!-- .blog-details -->
+
+          <div class="comment-form-wrap pt-5">
+            <h3 class="mb-5">Bookings For {{service.service_option}}</h3>
+
+            <form class="main-form" method="post">
+              {% csrf_token %}
+              <span class="mt-5 fs-3 text-primary">
+                {% if messages %}
+                    {% for message in messages %}
+                        {{message}}
+                    {% endfor %}
+                {% endif %}
+              </span>
+              <div class="form-row form-group">
+
+                <div class="col-md-6">
+                  <label for="name">Name *</label>
+                  <div type="text" class="form-control" id="name">{{request.user.last_name}} {{request.user.first_name}}</div>
+                </div>
+                <div class="col-md-6">
+                  <label for="email">Email *</label>
+                  <div type="email" class="form-control" id="email">{{request.user.email}}</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="website">Service Option</label>
+                <div type="text" class="form-control" id="email">{{service.service_option}}</div>
+                {% comment %} <select
+                  class="form-control"
+                  id="{{ serviceForm.service_option.id_for_label }}" 
+                  name="{{ serviceForm.service_option.name }}">
+                  {% for choice in serviceForm.service_option.field.choices %}
+                      <option value="{{ choice.0 }}" 
+                      {% if choice.0 == serviceForm.service_option.value %}
+                      selected
+                      {% endif %}>
+                      {{ choice.1 }}
+                      </option>
+                  {% endfor %}
+                </select> {% endcomment %}
+                
+              </div>
+  
+              <div class="form-group">
+                <label for="message">Description</label>
+                {{serviceForm.description}}
+                {% comment %} <textarea 
+                name="msg"  
+                cols="30" 
+                rows="8" 
+                class="form-control" 
+                id="{{ serviceForm.description.id_for_label }}" 
+                name="{{ serviceForm.description.name }}" 
+                value="{{ serviceForm.description.value }}"
+                >
+                </textarea> {% endcomment %}
+              </div>
+              <div class="form-group">
+                <input type="submit" value="Book" class="btn btn-primary">
+              </div>
+  
+            </form>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="sidebar">
+            <div class="sidebar-block">
+              <h3 class="sidebar-title">Search</h3>
+              <form action="#" class="search-form">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Type a keyword and hit enter">
+                  <button type="submit" class="btn"><span class="icon mai-search"></span></button>
+                </div>
+              </form>
+            </div>
+            <div class="sidebar-block">
+              <h3 class="sidebar-title">Categories</h3>
+              <ul class="categories">
+                <li><a href="#">Food <span>12</span></a></li>
+                <li><a href="#">Dish <span>22</span></a></li>
+                <li><a href="#">Desserts <span>37</span></a></li>
+                <li><a href="#">Drinks <span>42</span></a></li>
+                <li><a href="#">Ocassion <span>14</span></a></li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h3 class="sidebar-title">Recent Blog</h3>
+              <div class="blog-item">
+                <a class="post-thumb" href="">
+                  <img src="{% static '/assets/img/blog/blog_1.jpg' %}" alt="">
+                </a>
+                <div class="content">
+                  <h5 class="post-title"><a href="#">Even the all-powerful Pointing has no control</a></h5>
+                  <div class="meta">
+                    <a href="#"><span class="mai-calendar"></span> July 12, 2018</a>
+                    <a href="#"><span class="mai-person"></span> Admin</a>
+                    <a href="#"><span class="mai-chatbubbles"></span> 19</a>
+                  </div>
+                </div>
+              </div>
+              <div class="blog-item">
+                <a class="post-thumb" href="">
+                  <img src="{% static '/assets/img/blog/blog_2.jpg' %}" alt="">
+                </a>
+                <div class="content">
+                  <h5 class="post-title"><a href="#">Even the all-powerful Pointing has no control</a></h5>
+                  <div class="meta">
+                    <a href="#"><span class="mai-calendar"></span> July 12, 2018</a>
+                    <a href="#"><span class="mai-person"></span> Admin</a>
+                    <a href="#"><span class="mai-chatbubbles"></span> 19</a>
+                  </div>
+                </div>
+              </div>
+              <div class="blog-item">
+                <a class="post-thumb" href="">
+                  <img src="{% static '/assets/img/blog/blog_3.jpg' %}" alt="">
+                </a>
+                <div class="content">
+                  <h5 class="post-title"><a href="#">Even the all-powerful Pointing has no control</a></h5>
+                  <div class="meta">
+                    <a href="#"><span class="mai-calendar"></span> July 12, 2018</a>
+                    <a href="#"><span class="mai-person"></span> Admin</a>
+                    <a href="#"><span class="mai-chatbubbles"></span> 19</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-block">
+              <h3 class="sidebar-title">Tag Cloud</h3>
+              <div class="tagcloud">
+                <a href="#" class="tag-cloud-link">dish</a>
+                <a href="#" class="tag-cloud-link">menu</a>
+                <a href="#" class="tag-cloud-link">food</a>
+                <a href="#" class="tag-cloud-link">sweet</a>
+                <a href="#" class="tag-cloud-link">tasty</a>
+                <a href="#" class="tag-cloud-link">delicious</a>
+                <a href="#" class="tag-cloud-link">desserts</a>
+                <a href="#" class="tag-cloud-link">drinks</a>
+              </div>
+            </div>
+
+            <div class="sidebar-block">
+              <h3 class="sidebar-title">Paragraph</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem necessitatibus voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur similique, inventore eos fugit cupiditate numquam!</p>
+            </div>
+          </div>
+        </div> 
+      </div> <!-- .row -->
+      {% endfor %}
+      {% endif %}
+    </div> <!-- .container -->
+  </div> <!-- .page-section -->
+
+  <div class="page-section banner-home bg-image" style="background-image: url(../assets/img/banner-pattern.svg);">
+    <div class="container py-5 py-lg-0">
+      <div class="row align-items-center">
+        <div class="col-lg-4 wow zoomIn">
+          <div class="img-banner d-none d-lg-block">
+            <img src="{% static '/assets/img/mobile_app.png' %}" alt="">
+          </div>
+        </div>
+        <div class="col-lg-8 wow fadeInRight">
+          <h1 class="font-weight-normal mb-3">Get easy access of all features using One Health Application</h1>
+          <a href="#"><img src="{% static '/assets/img/google_play.svg' %}" alt=""></a>
+          <a href="#" class="ml-2"><img src="{% static '/assets/img/app_store.svg' %}" alt=""></a>
+        </div>
+      </div> <!-- .row -->
+    </div> <!-- .container -->
+  </div> <!-- .banner-home -->
+
+  {% endblock %}

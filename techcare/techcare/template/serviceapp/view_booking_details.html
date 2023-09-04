@@ -1,0 +1,136 @@
+{% extends 'common.html' %}
+  {% block content %}
+  {% load static %}
+    <section class="row my-4">
+    {% if my_booking %} {% for detail in my_booking %}
+        <div class="shadow border col-sm-12 col-md-4 pt-3" style="height: auto; margin: auto;">
+                <div class=" container-fluid d-flex py-4">
+                    <div class=" border border-primary rounded-circle " style="height: 100px; width: 100px;">
+                        {% if detail.profile.profile_passport %}
+                        <img src="{% static '/assets/img/doctors/doctor_1.jpg' %}" alt="{{profile.user.username}}" width="100px" height="100px"/>
+                        {% else %}
+                        <img src="{% static '/assets/img/doctors/doctor_1.jpg' %}" alt="{{profile.user.username}}" width="100px" height="100px"/>
+                        {% comment %} <i class="fas fa-user fa-lg fa-fw me-2"></i> {% endcomment %}
+                        {% endif %}
+                    </div>
+                    <h5 class="align-self-center mx-3">Booking Details</h5>
+                    
+                </div>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                        
+                        <td class="py-3" style="width: 150px;">Staff ID:</td>
+                        <td class="py-3" >TCH0{{detail.user_id}}</td>
+                   
+                        </tr>
+                        <tr>
+                        <td class="py-3" style="width: 150px;">Date Created:</td>
+                        <td class="py-3">{{detail.date_created}}</td>
+                        </tr>
+                        <tr>
+                        <td class="py-3" style="width: 150px;">Name:</td>
+                        <td class="py-3">{{detail.user.first_name}} {{detail.user.last_name}}</td>
+                        </tr>
+                        <tr>
+                        <td class="py-3" style="width: 150px;">Email:</td>
+                        <td class="py-3">{{detail.user.email}}</td>
+                        </tr>
+                        <tr>
+                        <td class="py-3" style="width: 150px;">Phone:</td>
+                        <td class="py-3">{{detail.profile.phone}}</td>
+                        </tr>
+                        <tr>
+                        <td class="py-3" style="width: 150px;">Service:</td>
+                        <td class="py-3">{{detail.service_name}}</td>
+                        </tr>
+                        {% if detail.payment == 1 %}
+                        <tr>
+                            <td class="py-3" style="width: 150px;">Payment:</td>
+                            <td class="py-3">Paid</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td class="py-3" style="width: 150px;">Payment:</td>
+                            <td class="py-3">Pending</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td class="py-3" style="width: 150px;">Assigned Doctor:</td>
+                            <td class="py-3">
+                                {% if detail.resident_doctor_id == 1 and detail.consultant_doctor_id == 1 %}
+                                    None
+                                {% elif detail.resident_doctor_id != 1%}
+                                Dr. {{detail.resident_doctor.first_name}} {{detail.resident_doctor.last_name}}
+                                {% elif detail.consultant_doctor_id != 1%}
+                                Dr. {{detail.consultant_doctor.first_name}} {{detail.consultant_doctor.last_name}}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="py-3" style="width: 150px;">Approved Date and Time:</td>
+                            <td class="py-3">Date:{{detail.approved_date}} Time: {{detail.approved_time}}</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3" style="width: 150px;">Served:</td>
+                            <td class="py-3">{{detail.served}}</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3" style="width: 150px;">Patient status:</td>
+                            <td class="py-3">{{detail.patient_status}}</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="py-3" style="width: 150px;">Doctors Remark:</td>
+                            <td class="py-3">{{detail.doctor_remark}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            
+            <div class= "field">
+                <div class ="control d-flex justify-content-center gap-2 py-4">
+                    {% if request.user.is_superuser or  request.user.is_staff%}
+                    {% if detail.payment == 1 %}
+                    <a href="{% url 'refer_booking' detail.booking_id %}">
+                        <button type="submit" class="btn btn-secondary">
+                            Refer
+                        </button>
+                    </a> 
+                    <a href="{% url 'accept_booking' detail.booking_id %}">
+                        <button type="submit" class="btn btn-primary mx-2">
+                            Accept 
+                        </button>
+                    </a>
+                    <a href="{% url 'decline_booking' detail.booking_id%}">
+                        <button type="submit" class="btn btn-primary">
+                            Decline
+                        </button>
+                    </a> 
+                    {% endif %}
+                    {% else %}
+                    <a href="{% url 'book_payment' detail.booking_id %}">
+                        <button type="submit" class="btn btn-primary">
+                            Make Payment
+                        </button>
+                    </a> 
+                    {% endif %}
+                </div>
+                <p>
+                    <span class="text-primary">
+                        {% if messages %}
+                        {% for message in messages %}
+                        {{message}}
+                        {% endfor %}
+                        {% endif %}
+                    </span>
+                </p>
+            </div>
+        </div>
+        
+        {% endfor %} {% endif %}
+    </section>
+
+ 
+
+  {% endblock %}

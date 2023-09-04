@@ -1,0 +1,83 @@
+{% extends 'common.html' %}
+  {% block title %}Services{% endblock title %} 
+  {% block content %}
+  {% load static %}
+
+    <section class="section main-section" style="margin-top: 10vh;">
+        <div class="grid gap-6 grid-cols-1 md:grid-cols-3 mb-6" style="padding-top: 5vh;">
+            <div class='card'>
+                <div class='d-flex justify-content-center'>
+                    <a href="{% url 'medical_report' user_id %}">
+                        <button type="submit" class="btn btn-primary m-3 ">
+                            Enter medical report
+                        </button>
+                    </a> 
+                </div>
+                
+                <div class="card-content">
+                    <div class="flex items-center justify-between">
+                        <div class="widget-label">
+                            <table class="table table-striped table-hover mx-auto px-auto">
+                                <thead bgcolor="#969cad">
+                                    <th>VISIT DATE</th>
+                                    <th>SERVICE NAME</th>
+                                    <th>DOCTOR</th>
+                                    <th>NEXT APPROVED DATE</th>
+                                    <th>NEXT APPROVED TIME</th>
+                                    <th>DESCRIPTION</th>
+                                    <th>VIEW DETAILS</th>
+                                    
+                                </thead>
+                                {% if medical_history %}
+
+                                    {% for booking in medical_history%}
+                                    <tr>
+                                        <td>
+                                            <span style="color: #0e399c;" class= "font-weight-bold">
+                                                {{booking.date_created}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span style="color: #969cad;" class= "font-weight-bold">
+                                                {{booking.service_option}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span style="color: #969cad;" class= "font-weight-bold">
+                                                {{booking.approved_doctor}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span style="color: #969cad;" class= "font-weight-bold">
+                                                {{booking.next_approved_date}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span style="color: #969cad;" class= "font-weight-bold">
+                                                {{booking.next_approved_time}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span style="color: #969cad;" class= "font-weight-bold">
+                                                {{booking.description}}
+                                            </span>
+                                        </td>
+                                        
+                                        <td>
+                                            <a href="{% url 'view_booking_detail' booking.booking_id %}">
+                                                <span style="color: #969cad;" class= "font-weight-bold">
+                                                    medical details
+                                                </span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  {% endblock %}

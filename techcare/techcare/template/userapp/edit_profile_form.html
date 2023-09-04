@@ -1,0 +1,37 @@
+{% extends 'common.html' %}
+  {% block content %}
+  {% load static %}
+
+        <div class="row mb-4">
+        <div class="col-3"></div>
+        <div class="col-md-6 col-12">
+            <p>
+                <span class="mt-5">
+                {% if messages %}
+                    {% for message in messages %}
+                        {{message}}
+                    {% endfor %}
+                {% endif %}
+                </span>
+            </p>
+            <form method="post" class="mt-4 border shadow p-3", encytype="multipart/form-data">
+                {% csrf_token %}
+                {% load bootstrap %}
+
+                {{user_form|bootstrap}}
+                {% if request.user.is_superuser %}
+                    {{admin_profile_form|bootstrap}}
+                {% else %}
+                    {{profile_form|bootstrap}}
+                {% endif %}
+                
+                <div class='d-flex justify-content-center'>
+                    <input class="btn btn-primary mt-2 me-3 loginbutton" type="submit" value="Update">
+                </div>
+            </form>
+        </div>
+        </div>
+        </div>
+ 
+
+{% endblock %}

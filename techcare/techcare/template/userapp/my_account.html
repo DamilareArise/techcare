@@ -1,0 +1,110 @@
+{% extends 'common.html' %}
+  {% block content %}
+  {% load static %}
+    <section class="row my-4">
+    {% if userprofile %} {% for profile in userprofile %}
+        <div class="shadow border col-sm-12 col-md-4 pt-3" style="height: auto; margin: auto;">
+                <div class=" container-fluid d-flex py-4">
+                    <div class=" border border-primary rounded-circle " style="height: 100px; width: 100px;">
+                        {% if profile.profile_passport %}
+                        <img src="{% static '/assets/img/doctors/doctor_1.jpg' %}" alt="{{profile.user.username}}" width="100px" height="100px"/>
+                        {% else %}
+                        <img src="{% static '/assets/img/doctors/doctor_1.jpg' %}" alt="{{profile.user.username}}" width="100px" height="100px"/>
+                        {% comment %} <i class="fas fa-user fa-lg fa-fw me-2"></i> {% endcomment %}
+                        {% endif %}
+                    </div>
+                    <h5 class="align-self-center mx-3">Account Details</h5>
+                    
+                </div>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                        {% if profile.staff == 1 %}
+                        <td class="py-3" style="width: 150px;">Staff ID:</td>
+                        <td class="py-3" >TCH0{{profile.user_id}}</td>
+                        {% else %}
+                        <td class="py-3" style="width: 150px;">Account ID:</td>
+                        <td class="py-3">TCH0{{profile.user_id}}</td>
+                        {% endif %}
+                        </tr>
+                        <tr>
+                        <td class="py-3" style="width: 150px;">Username:</td>
+                        <td class="py-3">{{profile.user.username}}</td>
+                        </tr>
+                        <tr>
+                        <td class="py-3" style="width: 150px;">Acccount Name:</td>
+                        <td class="py-3">{{profile.user.first_name}} {{profile.user.last_name}}</td>
+                        </tr>
+                        <tr>
+                        <td class="py-3" style="width: 150px;">Email:</td>
+                        <td class="py-3">{{profile.user.email}}</td>
+                        </tr>
+                        <tr>
+                        <td class="py-3" style="width: 150px;">Phone:</td>
+                        <td class="py-3">{{profile.phone}}</td>
+                        </tr>
+                        <tr>
+                        <td class="py-3" style="width: 150px;">Address:</td>
+                        <td class="py-3">{{profile.address}}</td>
+                        </tr>
+                        {% if request.user.is_superuser or request.user.is_staff %}
+                        <tr>
+                            <td class="py-3" style="width: 150px;">Position:</td>
+                            <td class="py-3">{{profile.position}}</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3" style="width: 150px;">Department:</td>
+                            <td class="py-3">{{profile.department}}</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3" style="width: 150px;">Particulars:</td>
+                            <td class="py-3">{{profile.particulars}}</td>
+                        </tr>
+                        {% endif %}
+                       
+                    </tbody>
+                </table>
+            
+            <div class= "field">
+                <div class ="control d-flex justify-content-center gap-2 py-4">
+                    {% if request.user.is_superuser %}
+                    <a href="{% url 'editAdmin_account' profile.user.id %}">
+                        <button type="submit" class="btn btn-primary">
+                            Edit account
+                        </button>
+                    </a> 
+                    <a href="{% url 'deactivate_account' request.user.id %}">
+                        <button type="submit" class="btn btn-dark mx-2">
+                            {% if profile.user.is_active == 1 %}
+                                Deactivate
+                            {% else %}
+                                Activate
+                            {% endif %}   
+                        </button>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'editUser_account' profile.user.id %}">
+                        <button type="submit" class="btn btn-primary">
+                            Edit account
+                        </button>
+                    </a> 
+                    {% endif %} 
+                </div>
+                <p>
+                    <span class="text-primary">
+                        {% if messages %}
+                        {% for message in messages %}
+                        {{message}}
+                        {% endfor %}
+                        {% endif %}
+                    </span>
+                </p>
+            </div>
+        </div>
+        
+        {% endfor %} {% endif %}
+    </section>
+
+ 
+
+  {% endblock %}
