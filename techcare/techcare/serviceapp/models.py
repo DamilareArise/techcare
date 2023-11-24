@@ -54,10 +54,8 @@ class BookingService(models.Model):
         approved_time = models.TimeField(null=True, blank=True, unique=False)
         description = models.CharField(max_length=300, blank=True, null=True)
         payment = models.BooleanField(default=False, blank=True, null=True, unique=False)
-        served = models.BooleanField(default=False, blank=True, null=True, unique=False)
-        patient_status = models.CharField(choices=gen.user_status, max_length=20, unique=False, null=True)
-        doctor_remark = models.CharField(max_length=100, blank=True, null=True, unique=False)
         price = models.BigIntegerField(unique=False, default=00)
+        doctor_remark = models.CharField(max_length=100, blank=True, null=True, unique=False)
 
 class PatientMedicalHistory(models.Model):
     gen = General()
@@ -70,6 +68,6 @@ class PatientMedicalHistory(models.Model):
     next_approved_date = models.DateField(null=True, blank=True, unique=False)
     next_approved_time = models.TimeField(null=True, blank=True, unique=False)
     description = models.CharField(max_length=300, blank=True, null=True)
-    doctor_remark = models.CharField(max_length=100, blank=True, null=True, unique=False)
-    service_name = models.CharField(max_length=100, blank=True, null=True, unique=False)
+    served = models.BooleanField(default=False, blank=True, null=True, unique=False)
     patient_status = models.CharField(choices=gen.user_status, max_length=20, unique=False, null=True)
+    doctor_remark = models.CharField(max_length=100, blank=True, null=True, unique=False)

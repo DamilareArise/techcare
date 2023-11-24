@@ -108,13 +108,13 @@
                         </button>
                     </a> 
                     {% endif %}
-                    {% else %}
+                    {% endif %}
+                   
                     <a href="{% url 'book_payment' detail.booking_id %}">
                         <button type="submit" class="btn btn-primary">
                             Make Payment
                         </button>
                     </a> 
-                    {% endif %}
                 </div>
                 <p>
                     <span class="text-primary">

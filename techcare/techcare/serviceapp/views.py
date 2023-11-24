@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from .models import Service, BookingService, PatientMedicalHistory
-from .forms import Service_form, BooksService_form, AcceptableBooks_forms, EditBookingService_form
+from .forms import Service_form, BooksService_form, AcceptableBooks_forms, EditBookingService_form, MedicalReportForm
 from techcare.userapp.models import Profile
 from django.contrib.auth.models import User
 from django.http import HttpResponsePermanentRedirect
@@ -34,6 +34,8 @@ def  createService(request):
     else:
         service_form = Service_form()
         return render(request, 'serviceapp/create_service.html', {'serviceForm': service_form})
+    
+
 
 @login_required
 def  editService(request, servid):
@@ -107,14 +109,14 @@ def patientBooking(request, user):
     return render(request=request, template_name='serviceapp/patient_booking.html', context={"patient_booking":my_booking})
 
 
-@login_required
-def bookingPayment(request, book_id):
-    pass
 
 @login_required
 def viewBookingDetail(request, book_id):
     my_booking = BookingService.objects.filter(booking_id = book_id)
-    return render (request, 'serviceapp/view_booking_details.html', {'my_booking':my_booking})
+    email = my_booking[0].user.email
+    price = my_booking[0].price
+    booking_id = my_booking[0].booking_id
+    return render (request, 'serviceapp/view_booking_details.html', {'my_booking':my_booking, 'email':email, 'price':price})
 
 @login_required
 def acceptBooking(request, book_id):
@@ -202,5 +204,18 @@ def medicalHistory(request, user):
     return render (request, 'serviceapp/medical_history.html', {'medical_history':medical_history, 'user_id':user})
 
 @login_required
-def medicalReport(request):
-    pass
+def medicalReport(request, user):
+    if request.method == 'POST':
+        medical_form = MedicalReportForm(request.POST)
+        if medical_form.is_valid():
+                form = medical_form.save(commit=False)
+                form.user_id = user
+                form.approved_doctor = request.user.id
+                form.service_id = medical_form.cleaned_data['service_name']
+                form.save()
+        return medicalHistory(request, user)
+    else:
+       medical_form = MedicalReportForm()
+       return render(request, 'serviceapp/medical_history_form.html', {'medical_form':medical_form})
+   
+           

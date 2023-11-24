@@ -11,7 +11,6 @@ urlpatterns = [
     re_path(r'^my_booking/(?P<user>\d+)/', service_views.myBooking, name='my_booking'),
     re_path(r'^patient_booking/(?P<user>\d+)/', service_views.patientBooking, name='patient_booking'),
     re_path(r'^view_booking_detail/(?P<book_id>\d+)/', service_views.viewBookingDetail, name='view_booking_detail'),
-    re_path(r'^book_payment/(?P<book_id>\d+)/', service_views.bookingPayment, name='book_payment'),
     re_path(r'^accept_booking/(?P<book_id>\d+)/', service_views.acceptBooking, name='accept_booking'),
     re_path(r'^refer_booking/(?P<book_id>\d+)/', service_views.referBooking, name='refer_booking'),
     re_path(r'^decline_booking/(?P<book_id>\d+)/', service_views.declineBooking, name='decline_booking'),
